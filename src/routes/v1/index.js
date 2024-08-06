@@ -6,7 +6,7 @@ const { UserMiddleware } = require('../../middlewares')
 
 const router = express.Router();
 
-router.get('/info', UserMiddleware.checkAuth, InfoController.info);
+router.get('/info', InfoController.info);
 
 router.use('/user', userRoutes);
 module.exports = router;
