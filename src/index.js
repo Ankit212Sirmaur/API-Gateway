@@ -7,7 +7,7 @@ const {Role, User} = require('./models');
 
 const limiter = rateLimit({
     windowMs: 2 * 60 * 1000,
-    max: 3,
+    max: 50,
 })
 
 const app = express();
@@ -28,14 +28,5 @@ app.use('/api', apiRoutes);
 
 app.listen(ServerConfig.PORT, async () => {
     console.log(`sucessfully started our server on port : ${ServerConfig.PORT}`);
-
-    const user = await User.findByPk(5);
-    const role = await Role.findByPk(2);
-    
-    if (user && role) {
-      await user.addRole(role);
-    } else {
-      console.log("User or Role not found");
-    }
     
 });

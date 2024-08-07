@@ -4,14 +4,14 @@ const AppError = require('../utils/error');
 const { UserService } = require('../services');
 
 function validateUserSingup(req, res, next) {
-    if(!req.body.email) {
+    if (!req.body.email) {
         errorResponse.message = "Something went wrong while Singup the User"
         errorResponse.error = new AppError(['Email not found in the incoming request'], StatusCodes.BAD_REQUEST)
         return res
             .status(StatusCodes.BAD_REQUEST)
             .json(errorResponse);
     }
-    if(!req.body.password){
+    if (!req.body.password) {
         errorResponse.message = "Something went wrong while Singup the User"
         errorResponse.error = new AppError(['Password not found in the incoming request'], StatusCodes.BAD_REQUEST)
         return res
@@ -24,7 +24,7 @@ function validateUserSingup(req, res, next) {
 async function checkAuth(req, res, next) {
     try {
         const response = await UserService.isAuthenticated(req.headers['x-access-token']);
-        if(response) {
+        if (response) {
             req.user = response;
             next();
         }
@@ -32,7 +32,19 @@ async function checkAuth(req, res, next) {
         return res.status(error.statusCode).json(error);
     }
 }
+
+async function isAdmin(req, res, next) {
+    const response = await UserService.isAdmin(req.user);
+    if (!response) {
+        return res
+            .status(StatusCodes.UNAUTHORIZED)
+            .json({ message: 'User not authorized to do this action' });
+    }
+    next();
+}
+
 module.exports = {
     validateUserSingup,
     checkAuth,
+    isAdmin,
 }

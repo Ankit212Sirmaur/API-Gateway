@@ -5,4 +5,5 @@ const { UserMiddleware } = require('../../middlewares')
 
 router.post('/signup', UserMiddleware.validateUserSingup, UserController.SignUP);
 router.post('/signin', UserMiddleware.validateUserSingup, UserController.SignIN)
+router.post('/role', UserMiddleware.checkAuth, UserMiddleware.isAdmin, UserController.AddRoletoUser)
 module.exports = router;

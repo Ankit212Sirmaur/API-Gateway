@@ -36,9 +36,8 @@ module.exports = (sequelize, DataTypes) => {
 
   // hooks
   User.beforeCreate(function encrypt(user) {
-    const hashpassword = bcrypt.hashSync(user.password, +ServerConfig.SALT_ROUNDS);
+    const hashpassword = bcrypt.hashSync(user.password, +ServerConfig.SALT_ROUNDS); // TYPE_cohersion
     user.password = hashpassword;
-    console.log('user', user);
   })
   return User;
 };
